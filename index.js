@@ -5,6 +5,7 @@ const app = express()
 const homeRoutes = require('./routes/home')
 const coursesRoutes = require('./routes/courses')
 const addRoutes = require('./routes/add')
+const cartRoutes = require('./routes/cart')
 
 const hbs = expressHandlebars.create({
     defaultLayout: 'main',
@@ -21,6 +22,7 @@ app.use(express.urlencoded({extended: true}))
 app.use('/', homeRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/add', addRoutes)
+app.use('/cart', cartRoutes)
 
 const PORT = process.env.PORT || 3000
 
