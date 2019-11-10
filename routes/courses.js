@@ -37,6 +37,19 @@ router.post('/edit', async (req, res) => {
 
 })
 
+
+router.post('/remove', async (req, res) => {
+    try {
+        await Course.deleteOne({
+            _id: req.body.id
+        })
+        res.redirect('/courses')
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 router.get('/:id', async (req, res) => {
     // const course = await Course.getById(req.params.id)
     const course = await Course.findById(req.params.id)
