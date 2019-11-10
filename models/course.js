@@ -91,8 +91,8 @@ const course = new Schema({
         type: String,
         required: true
     },
-    title: {
-        type: String,
+    price: {
+        type: Number,
         required: true
     },
     img: String,
