@@ -9,12 +9,13 @@ router.post('/add', async (req, res) => {
     res.redirect('/cart')
 })
 
-router.get('/cart', async (req, res) => {
+router.get('/', async (req, res) => {
     const cart = await Cart.fetch()
     res.render('cart', {
         title: 'Корзина',
         isCart: true,
-        cart
+        courses: cart.courses,
+        price: cart.price,
     })
 })
 
