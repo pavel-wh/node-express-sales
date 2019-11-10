@@ -42,13 +42,21 @@ userSchema.methods.addToCart = function (course) {
             count: 1
         })
     }
-
-    // const newCart = { items: items }
-    // this.cart = newCart
-
-    // this.cart = { items: items}
     this.cart = { items: items}
     return this.save()
+}
+
+userSchema.methods.removeFromCart = function (id) {
+    let items = [...this.cart.items]
+    const idx = items.findIndex(c => {
+        return c.courseId.toString() === id.toString()
+    })
+
+    if (items[idx].count === 1) {
+        items = items.filter(c => c.courseId.toString() !== id.toString())
+    } else {
+        items[idx].count--
+    }
 }
 
 module.exports = model('User', userSchema)
