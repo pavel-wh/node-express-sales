@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const expressHandlebars = require('express-handlebars')
+const session = require('express-session')
 const app = express()
 const mongoose = require('mongoose')
 const homeRoutes = require('./routes/home')
@@ -10,6 +11,8 @@ const cartRoutes = require('./routes/cart')
 const ordersRoutes = require('./routes/orders')
 const authRoutes = require('./routes/auth')
 const User = require('./models/user')
+const varMiddleware = require('./middleware/variables')
+
 
 const hbs = expressHandlebars.create({
     defaultLayout: 'main',
@@ -32,6 +35,12 @@ app.use(async (req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
+app.use(session({
+    secret: 'some secret value',
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(varMiddleware)
 
 app.use('/', homeRoutes)
 app.use('/courses', coursesRoutes)
