@@ -12,6 +12,7 @@ const ordersRoutes = require('./routes/orders')
 const authRoutes = require('./routes/auth')
 const User = require('./models/user')
 const varMiddleware = require('./middleware/variables')
+const userMiddleware = require('./middleware/user')
 
 
 const MONGO_URI = `mongodb+srv://pavel:kV3F5186uZhuLpRY@cluster0-pptdb.mongodb.net/test?retryWrites=true&w=majority`
@@ -38,7 +39,9 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+
 app.use(varMiddleware)
+app.use(userMiddleware)
 
 app.use('/', homeRoutes)
 app.use('/courses', coursesRoutes)
