@@ -25,12 +25,17 @@
       <h3>Создать аккаунт</h3>
       <form action="/auth/registration" method="post">
           <div class="input-field">
-              <input id="remail" name="remail" type="email" class="validate" required>
+              <input id="name" name="name" type="text" class="validate" required>
+              <label class="active" for="name">Ваше имя</label>
+              <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово">Введите своё имя</span>
+          </div>
+          <div class="input-field">
+              <input id="remail" name="email" type="email" class="validate" required>
               <label class="active" for="remail">Email</label>
               <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово">Введите свой email</span>
           </div>
           <div class="input-field">
-              <input id="rpassword" name="rpassword" type="password" class="validate" required>
+              <input id="rpassword" name="password" type="password" class="validate" required>
               <label class="active" for="rpassword">Пароль</label>
               <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово">Введите пароль</span>
           </div>
