@@ -16,5 +16,6 @@
         <label class="active" for="img">URL изображения</label>
         <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово"></span>
     </div>
+    <input type="hidden" name="_csrf" value="{{ csrf }}">
     <button type="submit" class="btn btn-primary">Добавить курс</button>
 </form>

@@ -18,6 +18,7 @@
               <label class="active" for="password">Пароль</label>
               <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово">Введите пароль</span>
           </div>
+          <input type="hidden" name="_csrf" value="{{ csrf }}">
           <button type="submit" class="btn btn-primary">Войти</button>
       </form>
     </div>
@@ -44,6 +45,7 @@
               <label class="active" for="confirm">Повторите пароль</label>
               <span class="helper-text" data-error="Поле не должно быть пустым" data-success="Готово">Повторите пароль</span>
           </div>
+          <input type="hidden" name="_csrf" value="{{ csrf }}">
           <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
       </form>
     </div>
