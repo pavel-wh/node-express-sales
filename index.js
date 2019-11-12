@@ -14,9 +14,7 @@ const ordersRoutes = require('./routes/orders')
 const authRoutes = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
-
-
-const MONGO_URI = `mongodb+srv://pavel:kV3F5186uZhuLpRY@cluster0-pptdb.mongodb.net/test?retryWrites=true&w=majority`
+const keys = require('./keys')
 
 const app = express()
 const hbs = expressHandlebars.create({
@@ -25,7 +23,7 @@ const hbs = expressHandlebars.create({
 })
 const store = new MongoStore({
     collection: 'sessions',
-    uri: MONGO_URI
+    uri: keys.MONGO_URI
 })
 
 app.engine('hbs', hbs.engine)
@@ -35,7 +33,7 @@ app.set('views', 'views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
-    secret: 'some secret value',
+    secret: keys.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store
@@ -71,7 +69,7 @@ async function start() {
             family: 4 // Use IPv4, skip trying IPv6
         }
         
-        await mongoose.connect(MONGO_URI, options)    
+        await mongoose.connect(keys.MONGO_URI, options)    
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${ PORT }`)
