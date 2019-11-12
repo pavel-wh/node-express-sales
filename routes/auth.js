@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
+const { body, validationResult } = require('express-validator')
 const nodemailer = require('nodemailer')
 const sendgrid = require('nodemailer-sendgrid-transport')
 const User = require('../models/user')
@@ -61,10 +62,16 @@ router.get('/logout', async  (req, res) => {
     })
 })
 
-router.post('/registration', async  (req, res) => {
+router.post('/registration', body('email').isEmail(), async (req, res) => {
     try {
         const { name, email, password, confirm } = req.body
         const candidate = await User.findOne({ email })
+
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            req.flash('registrationError', errors.array()[0].msg)
+            return res.status(422).redirect('/auth/login#registration')
+        }
 
         if (candidate) {
             req.flash('registrationError', 'Такой email занят')
@@ -85,10 +92,14 @@ router.post('/registration', async  (req, res) => {
 })
 
 router.get('/reset', (req, res) => {
-    res.render('auth/reset', {
-        title: 'Забыли пароль?',
-        error: req.flash('error')
-    })
+    try {
+        res.render('auth/reset', {
+            title: 'Забыли пароль?',
+            error: req.flash('error')
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 router.post('/reset', (req, res) => {
