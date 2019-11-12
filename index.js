@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const expressHandlebars = require('express-handlebars')
 const session = require('express-session')
-const app = express()
+const MongoStore = require('connect-mongodb-session')(session)
 const mongoose = require('mongoose')
 const homeRoutes = require('./routes/home')
 const coursesRoutes = require('./routes/courses')
@@ -14,9 +14,16 @@ const User = require('./models/user')
 const varMiddleware = require('./middleware/variables')
 
 
+const MONGO_URI = `mongodb+srv://pavel:kV3F5186uZhuLpRY@cluster0-pptdb.mongodb.net/test?retryWrites=true&w=majority`
+
+const app = express()
 const hbs = expressHandlebars.create({
     defaultLayout: 'main',
     extname: 'hbs'
+})
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: MONGO_URI
 })
 
 app.engine('hbs', hbs.engine)
@@ -28,7 +35,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(session({
     secret: 'some secret value',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store
 }))
 app.use(varMiddleware)
 
@@ -43,7 +51,6 @@ const PORT = process.env.PORT || 3000
 
 async function start() {
     try {
-        const MONGO_URI = `mongodb+srv://pavel:kV3F5186uZhuLpRY@cluster0-pptdb.mongodb.net/test?retryWrites=true&w=majority`
         const options = {
             useUnifiedTopology: true,
             useNewUrlParser: true,
@@ -60,17 +67,7 @@ async function start() {
         }
         
         await mongoose.connect(MONGO_URI, options)    
-        // const candidate = await User.findOne()
-        // if (!candidate) {
-        //     const user = new User({
-        //         email: 'pavel.wh@yandex.ru',
-        //         name: 'pavel',
-        //         cart: {
-        //             items: []
-        //         }
-        //     })
-        //     await user.save()
-        // }
+
         app.listen(PORT, () => {
             console.log(`Server is running on port ${ PORT }`)
         })
