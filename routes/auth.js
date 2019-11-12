@@ -91,6 +91,32 @@ router.get('/reset', (req, res) => {
     })
 })
 
+router.get('/password/:token', async (req, res) => {
+    if (!req.params.token) {
+        return res.redirect('/auth/login')
+    } 
+    try {
+        const user = await User.findOne({
+            resetToken: req.params.token,
+            resetTokenExp: { $gt: Date.now() }
+        })
+    
+        if(!user) {
+            return res.redirect('/auth/login')
+        } else {
+            res.render('auth/reset', {
+                title: 'Восстановить доступ',
+                error: req.flash('error'),
+                userId: user._id.toString(),
+                token: req.params.token
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 router.post('/reset', (req, res) => {
     try {
         crypto.randomBytes(32, async (error, buffer) => {
@@ -99,7 +125,7 @@ router.post('/reset', (req, res) => {
                 res.redirect('/auth/reset')
             }
             const token = buffer.toString('hex')
-            const candidate = User.findOne({
+            const candidate = await User.findOne({
                 email: req.body.email
             })
 
@@ -110,7 +136,8 @@ router.post('/reset', (req, res) => {
                 await transporter.sendMail(resetEmail(candidate.email, token))
                 res.redirect('/auth/login')
             } else {
-                req.flash('error', 'Такого email нет')
+                req.flash('error', 'Такой Email не зарегистрирован')
+                res.redirect('/auth/reset')
             }
         })
     } catch (error) {
