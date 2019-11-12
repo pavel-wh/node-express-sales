@@ -19,7 +19,8 @@ const keys = require('./keys')
 const app = express()
 const hbs = expressHandlebars.create({
     defaultLayout: 'main',
-    extname: 'hbs'
+    extname: 'hbs',
+    helpers: require('./utils/hbs-helpers')
 })
 const store = new MongoStore({
     collection: 'sessions',
