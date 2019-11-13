@@ -65,27 +65,22 @@ router.get('/logout', async  (req, res) => {
 
 router.post('/registration', registrationValidators, async (req, res) => {
     try {
-        const { name, email, password, confirm } = req.body
-        const candidate = await User.findOne({ email })
+        const { name, email, password } = req.body
 
         const errors = validationResult(req)
+        
         if(!errors.isEmpty()) {
             req.flash('registrationError', errors.array()[0].msg)
             return res.status(422).redirect('/auth/login#registration')
         }
 
-        if (candidate) {
-            req.flash('registrationError', 'Такой email занят')
-            res.redirect('/auth/login#registration')
-        } else {
-            const hashPassword = await bcrypt.hash(password, 12)
-            const user = new User({
-                name, email, password: hashPassword, cart: {items: []}
-            })
-            await user.save()
-            res.redirect('/auth/login#login')
-            await transporter.sendMail(regEmail(email))
-        }
+        const hashPassword = await bcrypt.hash(password, 12)
+        const user = new User({
+            name, email, password: hashPassword, cart: {items: []}
+        })
+        await user.save()
+        res.redirect('/auth/login#login')
+        await transporter.sendMail(regEmail(email))
 
     } catch (error) {
         console.log(error)
