@@ -2,7 +2,6 @@
 {{#if error}}
     <p class="alert">{{ error }}</p>
 {{/if}}
-<a href="/">Домой</a>
 <form action="/add" method="post">
     <div class="input-field">
         <input id="title" name="title" type="text" class="validate" required value="{{ data.title }}">

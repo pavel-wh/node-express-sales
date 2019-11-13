@@ -1,5 +1,4 @@
 <h1>Редактировать {{ course.title }}</h1>
-<a href="/">Домой</a>
 <form action="/courses/edit" method="post" class="course-edit-form">
     <div class="input-field">
         <input id="title" name="title" type="text" class="validate" required value="{{ course.title }}">

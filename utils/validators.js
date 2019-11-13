@@ -17,7 +17,7 @@ exports.registrationValidators = [
             }
         })
         .normalizeEmail(),
-    body('password', 'Пароль должен быть минимум 6ть символов')
+    body('password', 'Пароль должен быть минимум 6 символов')
         .isLength({ min: 6, max: 56 })
         .isAlphanumeric()
         .trim(),
