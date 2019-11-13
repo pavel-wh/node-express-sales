@@ -24,6 +24,15 @@
             
             {{#if isAuth}}
             
+                {{#if isProfile}}
+                    <li class="active">
+                        <a href="/profile">Профиль</a>
+                    </li>
+                {{else}}
+                    <li>
+                        <a href="/profile">Профиль</a>
+                    </li>
+                {{/if}}
                 {{#if isAdd}}
                     <li class="active">
                         <a href="/add">Добавить курс</a>
